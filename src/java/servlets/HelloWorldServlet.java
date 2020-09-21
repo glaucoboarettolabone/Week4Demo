@@ -21,11 +21,16 @@ public class HelloWorldServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
-        
+
         request.setAttribute("firstname", firstName);
         request.setAttribute("lastname", lastName);
         
-        getServletContext().getRequestDispatcher("/WEB-INF/sayHello.jsp").forward(request, response);
+        if (firstName == null || firstName.equals("") || lastName == null || lastName.equals("")) {
+            getServletContext().getRequestDispatcher("/WEB-INF/helloWorldForm.jsp").forward(request, response);
+            return;
+        }
+        
+        getServletContext().getRequestDispatcher("/WEB-INF/sayHello.jsp").forward(request, response);   
     }
 
 }
