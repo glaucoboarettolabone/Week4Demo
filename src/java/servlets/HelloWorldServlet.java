@@ -5,6 +5,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Person;
 
 /**
  *
@@ -19,17 +20,22 @@ public class HelloWorldServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String firstName = request.getParameter("firstname");
-        String lastName = request.getParameter("lastname");
-
-        request.setAttribute("firstname", firstName);
-        request.setAttribute("lastname", lastName);
+        String firstname = request.getParameter("firstname");
+        String lastname = request.getParameter("lastname");
         
-        if (firstName == null || firstName.equals("") || lastName == null || lastName.equals("")) {
+        if (firstname == null || firstname.equals("") || lastname == null || lastname.equals("")) {
+            request.setAttribute("firstname", firstname);
+            request.setAttribute("lastname", lastname);
             request.setAttribute("message", "Invalid entry. Please enter both your first and last names.");
+            
             getServletContext().getRequestDispatcher("/WEB-INF/helloWorldForm.jsp").forward(request, response);
+            
             return;
         }
+        
+        Person person = new Person(firstname, lastname);
+        request.setAttribute("person", person);
+        
         
         getServletContext().getRequestDispatcher("/WEB-INF/sayHello.jsp").forward(request, response);   
     }
